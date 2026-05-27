@@ -30,7 +30,6 @@
       --card-bg: #13161a;
       --border: #2a2f36;
     }
-    /* Header */
     .dashboard-header {
       background: #13161a;
       border-bottom: 1px solid var(--border);
@@ -73,7 +72,6 @@
       background: #ff4d6a;
       color: white;
     }
-    /* Main content */
     .main-content {
       flex: 1;
       padding: 40px 0;
@@ -161,6 +159,8 @@
       cursor: pointer;
       transition: 0.2s;
       font-size: 0.9rem;
+      display: inline-block;
+      text-decoration: none;
     }
     .invest-btn:hover {
       background: #00a6d9;
@@ -168,7 +168,6 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
   <header class="dashboard-header">
     <div class="container header-content">
       <div class="logo">Bit<span>Dollar</span> <small style="font-size: 0.9rem; color:#b0b8c1;">Dashboard</small></div>
@@ -179,9 +178,7 @@
     </div>
   </header>
 
-  <!-- Main content -->
   <main class="container main-content">
-    <!-- Welcome & Balance -->
     <div class="welcome-section">
       <h2>Welcome, <span id="user-name">Investor</span></h2>
       <p style="color: #b0b8c1;">Here’s your portfolio overview.</p>
@@ -197,7 +194,6 @@
       </div>
     </div>
 
-    <!-- Investment Plans -->
     <div>
       <h3 style="color: white; font-size: 1.4rem; margin-bottom: 8px;">Investment Plans</h3>
       <p style="color: #b0b8c1;">Choose a plan to start earning daily returns.</p>
@@ -211,7 +207,6 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-app.js";
     import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/12.13.0/firebase-auth.js";
 
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBTpBM1dEOxvDu46lNnQKCyIcG8BdMJ9FM",
       authDomain: "bitdollar-103a3.firebaseapp.com",
@@ -225,7 +220,6 @@
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Investment plans data (same as your website)
     const plansData = [
       { name: "Starter Plan", roi: "15%", duration: "1 day", requirement: "$50 - $999", assets: "Ethereum, BSC, Polygon" },
       { name: "Amateur Plan", roi: "40%", duration: "2 days", requirement: "$1,000 - $2,999", assets: "Ethereum, Solana, Avalanche" },
@@ -233,7 +227,6 @@
       { name: "Expert Plan", roi: "80%", duration: "7 days", requirement: "$10,000 - unlimited", assets: "Gold, Silver, Platinum" }
     ];
 
-    // Render plans into container
     function renderPlans() {
       const container = document.getElementById('plans-container');
       container.innerHTML = plansData.map(plan => `
@@ -243,31 +236,28 @@
           <p class="plan-detail"><i class="far fa-clock"></i> ${plan.duration}</p>
           <p class="plan-detail"><i class="fas fa-dollar-sign"></i> ${plan.requirement}</p>
           <p class="plan-detail"><i class="fas fa-coins"></i> ${plan.assets}</p>
-          <button class="invest-btn">Invest Now</button>
+          <a href="mailto:peterrobertdib@gmail.com?subject=Investment Inquiry: ${encodeURIComponent(plan.name)}" 
+             class="invest-btn">
+            Invest Now
+          </a>
         </div>
       `).join('');
     }
 
-    // Check authentication state
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, show email and load dashboard
         document.getElementById('user-email').textContent = user.email;
-        // Extract name from email (before @) or use a generic name
         const displayName = user.email ? user.email.split('@')[0] : 'Investor';
         document.getElementById('user-name').textContent = displayName;
         renderPlans();
       } else {
-        // No user signed in, redirect to login page
         window.location.href = 'login.html';
       }
     });
 
-    // Logout functionality
     document.getElementById('logout-btn').addEventListener('click', async () => {
       try {
         await signOut(auth);
-        // onAuthStateChanged will handle redirection to login
       } catch (error) {
         console.error('Logout error:', error);
         alert('Logout failed. Please try again.');
