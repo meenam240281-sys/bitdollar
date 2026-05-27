@@ -579,5 +579,41 @@
       }
     })();
   </script>
+  <!-- Login/Sign Up links injected via JS -->
+<script>
+  (function() {
+    // Find the navbar links container
+    const navLinks = document.querySelector('.nav-links');
+    if (!navLinks) return;
+
+    // Create a container for auth links to keep them grouped
+    const authContainer = document.createElement('div');
+    authContainer.style.display = 'flex';
+    authContainer.style.gap = '24px';
+    authContainer.style.marginLeft = 'auto'; // push to right if needed, but they'll be after existing links
+
+    // Login link
+    const loginLink = document.createElement('a');
+    loginLink.href = 'login.html';
+    loginLink.textContent = 'Login';
+    loginLink.style.cssText = 'color: #ccc; font-weight: 500; cursor: pointer; transition: 0.2s; text-decoration: none;';
+    loginLink.onmouseover = function() { this.style.color = 'white'; };
+    loginLink.onmouseout = function() { this.style.color = '#ccc'; };
+
+    // Sign Up link
+    const signupLink = document.createElement('a');
+    signupLink.href = 'signup.html';
+    signupLink.textContent = 'Sign Up';
+    signupLink.style.cssText = 'color: #ccc; font-weight: 500; cursor: pointer; transition: 0.2s; text-decoration: none;';
+    signupLink.onmouseover = function() { this.style.color = 'white'; };
+    signupLink.onmouseout = function() { this.style.color = '#ccc'; };
+
+    authContainer.appendChild(loginLink);
+    authContainer.appendChild(signupLink);
+
+    // Append to the existing nav-links
+    navLinks.appendChild(authContainer);
+  })();
+</script>
 </body>
                        </html>
